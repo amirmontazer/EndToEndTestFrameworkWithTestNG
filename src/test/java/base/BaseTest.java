@@ -12,19 +12,6 @@ public class BaseTest {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
         driver = new ChromeDriver();
-/*
-        System.setProperty("headless", "false"); // You can set this property elsewhere
-        String headless = System.getProperty("headless");
-
-        ChromeDriverManager.chromedriver();
-        if("true".equals(headless)) {
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.addArguments("--headless");
-            driver = new ChromeDriver(chromeOptions);
-        } else {
-            driver = new ChromeDriver();
-        }
-*/
         driver.manage().window().maximize();
     }
 
