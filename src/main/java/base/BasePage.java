@@ -67,4 +67,15 @@ public class BasePage {
         el.sendKeys(Keys.ARROW_DOWN);
         el.sendKeys(Keys.ENTER);
     }
+
+    public void sleep(int millis ){
+        try {
+            Thread.sleep(millis);
+        }catch (Exception ex){}
+    }
+
+    public void clearElement(By elementBy){
+        waitVisibility(elementBy);
+        driver.findElement(elementBy).clear();
+    }
 }

@@ -3,7 +3,7 @@
 <suite name="WOW">
     <test verbose="2" preserve-order="true" name="e2e">
         <classes>
-
+                <class name="workerProfile.WorkerProfileTest"></class>
         </classes>
     </test>
 </suite>
