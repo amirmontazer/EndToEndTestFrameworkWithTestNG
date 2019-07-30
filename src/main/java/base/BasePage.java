@@ -9,6 +9,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class BasePage {
     private static final int TIMEOUT = 15;
     private static final int POLLING = 100;
@@ -78,4 +81,22 @@ public class BasePage {
         waitVisibility(elementBy);
         driver.findElement(elementBy).clear();
     }
+    public void verifyResponseCode(String url){
+        HttpURLConnection huc = null;
+        int respCode = 200;
+        try {
+            huc = (HttpURLConnection)(new URL(url).openConnection());
+            huc.setRequestMethod("HEAD");
+            huc.connect();
+            respCode = huc.getResponseCode();
+        } catch (Exception e) {
+//            e.printStackTrace();
+            respCode = 1000;
+        }finally {
+            huc.disconnect();
+        }
+       Assert.assertTrue(respCode == 200,url + " is a broken link. \r\n");
+    }
+
+
 }
