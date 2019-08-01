@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -19,13 +18,16 @@ public class BasePage {
     public WebDriver driver;
     public WebDriverWait wait;
 
-
     public BasePage(WebDriver driver){
+        initialPage(driver);
+    }
+
+    private void initialPage(WebDriver driver){
         this.driver = driver;
         wait = new WebDriverWait(driver,TIMEOUT, POLLING);
     }
 
-    protected void waitVisibility(By elementBy) {
+    public void waitVisibility(By elementBy) {
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(elementBy));
     }
 
