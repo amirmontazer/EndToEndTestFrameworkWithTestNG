@@ -46,12 +46,16 @@ public class BaseTest {
 
     private String getRemoteWebDriverUrl() {
         //        Map<String, String> env = System.getenv();
-        String remoteHost = System.getenv("REMOTE_HOST");
-        String remotePort = System.getenv("REMOTE_PORT");
+        String remoteHost = getenv("REMOTE_HOST");
+        String remotePort = getenv("REMOTE_PORT");
         return "http://" + remoteHost + ":" + remotePort + "/wd/hub"; //"http://localhost:4444/wd/hub"
     }
 
     private void setHostUrl() {
-        hostUrl = System.getenv("HOST_URL");
+        hostUrl = getenv("HOST_URL");
+    }
+
+    private String getenv(String name){
+        return System.getenv(name).trim();
     }
 }
