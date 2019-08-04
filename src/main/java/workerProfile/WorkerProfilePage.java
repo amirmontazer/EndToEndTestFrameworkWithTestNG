@@ -1,81 +1,98 @@
 package workerProfile;
 
 import base.BasePage;
+import base.FileHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class WorkerProfilePage extends BasePage {
-    public WorkerProfilePage(WebDriver driver){
+
+    Map<String, By> elements;
+
+    public WorkerProfilePage(WebDriver driver) {
         super(driver);
+        init();
     }
 
-    private By countryBy = By.id("country");
-    private By firstNameBy = By.id("firstName");
-    private By middleNameBy = By.id("middleName");
-    private By lastNameBy = By.id("lastName");
-    private By emailBy = By.id("email");
-    private By passwordBy = By.id("password");
-    private By agreeBtnBy = By.cssSelector("form > div > div:nth-child(10) > div > button");
-    private By verificationBy = By.cssSelector("#app > div > div > div.container > div > div.column.four > div > div > form > div > div > div > div:nth-child(1) > div > label");
+    public void init() {
+        FileHelper fileHelper = new FileHelper();
+        fileHelper.openProperties("src/main/java/workerProfile/resources/workerProfile.properties");
 
-    public WorkerProfilePage goToPage(String url){
+        elements = new HashMap<String, By>();
+        elements.put("countryBy", By.id(fileHelper.getProperty("country")));
+        elements.put("firstNameBy", By.id(fileHelper.getProperty("firstName")));
+        elements.put("middleNameBy", By.id(fileHelper.getProperty("middleName")));
+        elements.put("lastNameBy", By.id(fileHelper.getProperty("lastName")));
+        elements.put("emailBy", By.id(fileHelper.getProperty("email")));
+        elements.put("passwordBy", By.id(fileHelper.getProperty("password")));
+        elements.put("agreeBtnBy", By.cssSelector(fileHelper.getProperty("agreeBtn")));
+        elements.put("verificationBy", By.cssSelector(fileHelper.getProperty("verification")));
+    }
+
+    public WorkerProfilePage goToPage(String url) {
         driver.get(url);
         return this;
     }
 
-    public WorkerProfilePage selectCountry(String countryText){
-        selectDropdownByText(countryBy, countryText);
+    public WorkerProfilePage selectCountry(String countryText) {
+        selectDropdownByText(elements.get("countryBy"), countryText);
         return this;
     }
 
-    public WorkerProfilePage typeFirstName(String firstname){
-        writeText(firstNameBy, firstname);
+    public WorkerProfilePage typeFirstName(String firstname) {
+        writeText(elements.get("firstNameBy"), firstname);
         return this;
     }
 
-    public WorkerProfilePage typeMiddleName(String middlename){
-        writeText(middleNameBy, middlename);
+    public WorkerProfilePage typeMiddleName(String middlename) {
+        writeText(elements.get("middleNameBy"), middlename);
         return this;
     }
 
-    public WorkerProfilePage typeLastName(String lastname){
-        writeText(lastNameBy, lastname);
+    public WorkerProfilePage typeLastName(String lastname) {
+        writeText(elements.get("lastNameBy"), lastname);
         return this;
     }
 
-    public WorkerProfilePage typeEmail(){
-        writeText(emailBy, generateEmail());
+    public WorkerProfilePage typeEmail() {
+        writeText(elements.get("emailBy"), generateEmail());
         return this;
     }
 
-    public WorkerProfilePage typePassword(String password){
-        writeText(passwordBy, password);
+    public WorkerProfilePage typePassword(String password) {
+        writeText(elements.get("passwordBy"), password);
         return this;
     }
 
-    public WorkerProfilePage clearAll(){
-        selectDropdownByText(countryBy,"select country");
-        clearElement(firstNameBy);
-        clearElement(middleNameBy);
-        clearElement(lastNameBy);
-        clearElement(emailBy);
-        clearElement(passwordBy);
+    public WorkerProfilePage clearAll() {
+        selectDropdownByText(elements.get("countryBy"), "select country");
+        clearElement(elements.get("firstNameBy"));
+        clearElement(elements.get("middleNameBy"));
+        clearElement(elements.get("lastNameBy"));
+        clearElement(elements.get("emailBy"));
+        clearElement(elements.get("passwordBy"));
         return this;
     }
 
-    public void clickRegister(){
-        click(agreeBtnBy);
+    public void clickRegister() {
+        click(elements.get("agreeBtnBy"));
     }
 
-    public void assertVerification(){
-        assertEquals(verificationBy, "Verification Code");
+    public void assertVerification() {
+        assertEquals(elements.get("verificationBy"), "Verification Code");
     }
 
-    private String generateEmail(){
+    private String generateEmail() {
         Random rnd = new Random();
         int rndint = rnd.nextInt(1000000);
         return "username" + rndint + "@gmail.com";
+    }
+
+    public void isNotRegisterButtonDisplay() {
+        isElementDisplay(elements.get("verificationBy"));
     }
 }

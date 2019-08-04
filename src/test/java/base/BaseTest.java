@@ -18,20 +18,8 @@ public class BaseTest {
 
     @BeforeClass
     public void setup() throws MalformedURLException {
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
-//        driver = new ChromeDriver();
-        fileHelper fileHelper = new fileHelper();
-        fileHelper.openProperties("src/main/resources/app.properties");
-        hostUrl = fileHelper.getProperty("host.url");
-//        Map<String, String> env = System.getenv();
-        String remoteHost = System.getenv("REMOTE_HOST");
-        String remotePort = System.getenv("REMOTE_PORT");
-        String remoteUrl = "http://" + remoteHost + ":" + remotePort + "/wd/hub"; //"http://localhost:4444/wd/hub"
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        capabilities.setPlatform(Platform.LINUX);
-        capabilities.setBrowserName("chrome");
-        driver = new RemoteWebDriver(new URL(remoteUrl), capabilities);
+        setHostUrl();
+        driver = new RemoteWebDriver(new URL(getRemoteWebDriverUrl()), initCapabilities());
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
@@ -46,5 +34,24 @@ public class BaseTest {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    private DesiredCapabilities initCapabilities() {
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+        capabilities.setPlatform(Platform.LINUX);
+        capabilities.setBrowserName("chrome");
+        return capabilities;
+    }
+
+    private String getRemoteWebDriverUrl() {
+        //        Map<String, String> env = System.getenv();
+        String remoteHost = System.getenv("REMOTE_HOST");
+        String remotePort = System.getenv("REMOTE_PORT");
+        return "http://" + remoteHost + ":" + remotePort + "/wd/hub"; //"http://localhost:4444/wd/hub"
+    }
+
+    private void setHostUrl() {
+        hostUrl = System.getenv("HOST_URL");
     }
 }

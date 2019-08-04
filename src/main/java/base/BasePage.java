@@ -100,5 +100,19 @@ public class BasePage {
        Assert.assertTrue(respCode == 200,url + " is a broken link. \r\n");
     }
 
+    public void isElementDisplay(By elementBy){
+        try{
+            Assert.assertTrue(driver.findElement(elementBy).isDisplayed());
+        }catch (Exception ex){
+            Assert.assertTrue(false);
+        }
+    }
 
+    public void isNotElementDisplay(By elementBy){
+        try{
+            Assert.assertFalse(driver.findElement(elementBy).isDisplayed());
+        }catch (Exception ex){
+            Assert.assertTrue(true);
+        }
+    }
 }

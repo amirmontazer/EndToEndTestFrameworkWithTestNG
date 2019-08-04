@@ -43,6 +43,7 @@ public class WorkerProfileTest extends BaseTest {
                 .typeEmail()
                 .typePassword("aS1@qwer")
                 .clickRegister();
+        wpp.isNotRegisterButtonDisplay();
 //        wpp.assertVerification();
     }
 }
