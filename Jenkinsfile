@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker-compose up'
+        sh 'docker-compose up -d'
         sh 'mvn -T 8 install'
       }
     }
