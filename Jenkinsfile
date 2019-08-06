@@ -21,6 +21,7 @@ pipeline {
   post {
       always {
           sh 'docker-compose down'
+          archiveArtifacts 'ExtentReports/*.html'
       }
   }
   environment {
