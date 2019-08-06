@@ -1,4 +1,4 @@
-package base;
+package tests.base;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +20,7 @@ public class BaseTest {
     public void setup() throws MalformedURLException {
         setHostUrl();
         driver = new RemoteWebDriver(new URL(getRemoteWebDriverUrl()), initCapabilities());
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 

@@ -66,3 +66,15 @@ nb-configuration.xml
 ## Environmental Settings
 #########################
 .env.sample
+
+
+#########################
+## Logs and Reports
+#########################
+/ExtentReports/*
+
+
+#########################
+## git
+#########################
+!*.gitkeep

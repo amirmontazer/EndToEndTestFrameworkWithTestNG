@@ -1,7 +1,7 @@
-package workerProfile;
+package pages.workerProfile;
 
-import base.BasePage;
-import base.FileHelper;
+import pages.base.BasePage;
+import pages.base.FileHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -20,7 +20,7 @@ public class WorkerProfilePage extends BasePage {
 
     public void init() {
         FileHelper fileHelper = new FileHelper();
-        fileHelper.openProperties("src/main/java/workerProfile/resources/workerProfile.properties");
+        fileHelper.openProperties("src/main/java/pages/workerProfile/resources/workerProfile.properties");
 
         elements = new HashMap<String, By>();
         elements.put("countryBy", By.id(fileHelper.getProperty("country")));

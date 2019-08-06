@@ -1,4 +1,4 @@
-package base;
+package pages.base;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -102,7 +102,8 @@ public class BasePage {
 
     public void isElementDisplay(By elementBy){
         try{
-            Assert.assertTrue(driver.findElement(elementBy).isDisplayed());
+            WebElement el = driver.findElement(elementBy);
+            Assert.assertTrue(el.isDisplayed());
         }catch (Exception ex){
             Assert.assertTrue(false);
         }
