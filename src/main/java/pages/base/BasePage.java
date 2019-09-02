@@ -1,5 +1,6 @@
 package pages.base;
 
+import org.graalvm.compiler.replacements.nodes.CStringConstant;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -17,104 +18,114 @@ public class BasePage {
 
     public WebDriver driver;
     public WebDriverWait wait;
-    public FileHelper element;
+    public FileHelper elements;
 
-    public BasePage(WebDriver driver){
+    public BasePage(WebDriver driver) {
         initialPage(driver);
     }
 
-    private void initialPage(WebDriver driver){
+    private void initialPage(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver,TIMEOUT, POLLING);
-        element = FileHelper.getInstance();
+        wait = new WebDriverWait(driver, TIMEOUT, POLLING);
+        elements = FileHelper.getInstance();
     }
 
-    public void waitVisibility(By elementBy) {
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(elementBy));
+    private By getElement(String el){
+        return elements.get(el);
     }
 
-    public void click(By elementBy) {
-        waitVisibility(elementBy);
-        driver.findElement(elementBy).click();
+    private WebElement findElement(String el){
+        return driver.findElement(getElement(el));
     }
 
-    public void writeText(By elementBy, String text) {
-        waitVisibility(elementBy);
-        driver.findElement(elementBy).sendKeys(text);
+    public void waitVisibility(String el) {
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(getElement(el)));
     }
 
-    public String readText(By elementBy) {
-        waitVisibility(elementBy);
-        return driver.findElement(elementBy).getText();
+    public void click(String el) {
+        waitVisibility(el);
+        findElement(el).click();
     }
 
-    public void assertEquals(By elementBy, String expectedText) {
-        waitVisibility(elementBy);
-        Assert.assertEquals(readText(elementBy), expectedText);
+    public void sendKeys(String el, String text) {
+        waitVisibility(el);
+        WebElement webEl = findElement(el);
+        webEl.clear();
+        webEl.sendKeys(text);
     }
 
-    public void selectDropdownByText(By elementBy, String expectedText){
-        waitVisibility(elementBy);
-        Select drp = new Select(driver.findElement(elementBy));
+    public String getText(String el) {
+        waitVisibility(el);
+        return findElement(el).getText();
+    }
+
+    public void assertEquals(String el, String expectedText) {
+        waitVisibility(el);
+        Assert.assertEquals(getText(el), expectedText);
+    }
+
+    public void selectDropdownByText(String el, String expectedText) {
+        waitVisibility(el);
+        Select drp = new Select(findElement(el));
         drp.selectByVisibleText(expectedText);
     }
 
-    public void selectDropdownByValue(By elementBy, String expectedValue){
-        waitVisibility(elementBy);
-        Select drp = new Select(driver.findElement(elementBy));
+    public void selectDropdownByValue(String el, String expectedValue) {
+        waitVisibility(el);
+        Select drp = new Select(findElement(el));
         drp.selectByValue(expectedValue);
     }
 
-    public void selectFromAutocomplete(By elementBy, String text, int millis ) throws InterruptedException{
-        waitVisibility(elementBy);
-        WebElement el = driver.findElement(elementBy);
-        el.clear();
-        el.sendKeys(text);
+    public void selectFromAutocomplete(String el, String text, int millis) throws InterruptedException {
+        waitVisibility(el);
+        WebElement webEl = findElement(el);
+        webEl.clear();
+        webEl.sendKeys(text);
         Thread.sleep(millis);
-        el.sendKeys(Keys.ARROW_DOWN);
-        el.sendKeys(Keys.ENTER);
+        webEl.sendKeys(Keys.ARROW_DOWN);
+        webEl.sendKeys(Keys.ENTER);
     }
 
-    public void sleep(int millis ){
+    public void sleep(int millis) {
         try {
             Thread.sleep(millis);
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 
-    public void clearElement(By elementBy){
-        waitVisibility(elementBy);
-        driver.findElement(elementBy).clear();
+    public void clear(String el) {
+        waitVisibility(el);
+        findElement(el).clear();
     }
-    public void verifyResponseCode(String url){
+
+    public void assertResponseCode(String url, int expectedResponseCode) {
         HttpURLConnection huc = null;
         int respCode = 200;
         try {
-            huc = (HttpURLConnection)(new URL(url).openConnection());
+            huc = (HttpURLConnection) (new URL(url).openConnection());
             huc.setRequestMethod("HEAD");
             huc.connect();
             respCode = huc.getResponseCode();
         } catch (Exception e) {
-//            e.printStackTrace();
             respCode = 1000;
-        }finally {
+        } finally {
             huc.disconnect();
         }
-       Assert.assertTrue(respCode == 200,url + " is a broken link. \r\n");
+        Assert.assertTrue(respCode == expectedResponseCode, url + " is a broken link. \r\n");
     }
 
-    public void isElementDisplay(By elementBy){
-        try{
-            WebElement el = driver.findElement(elementBy);
-            Assert.assertTrue(el.isDisplayed());
-        }catch (Exception ex){
+    public void isDisplayed(String el) {
+        try {
+            Assert.assertTrue(findElement(el).isDisplayed());
+        } catch (Exception ex) {
             Assert.assertTrue(false);
         }
     }
 
-    public void isNotElementDisplay(By elementBy){
-        try{
-            Assert.assertFalse(driver.findElement(elementBy).isDisplayed());
-        }catch (Exception ex){
+    public void isNotDisplayed(String el) {
+        try {
+            Assert.assertFalse(findElement(el).isDisplayed());
+        } catch (Exception ex) {
             Assert.assertTrue(true);
         }
     }

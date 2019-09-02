@@ -7,7 +7,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +16,7 @@ public class BaseTest {
     public String hostUrl;
 
     @BeforeClass
-    public void setup() throws MalformedURLException {
+    public void setupBaseTest() throws MalformedURLException {
         setHostUrl();
         driver = new RemoteWebDriver(new URL(getRemoteWebDriverUrl()), initCapabilities());
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
