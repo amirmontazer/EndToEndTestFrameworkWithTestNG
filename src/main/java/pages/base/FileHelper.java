@@ -1,36 +1,66 @@
 package pages.base;
-import org.w3c.dom.Document;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+import org.openqa.selenium.By;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class FileHelper {
-    private Properties appProps;
-    private Document xmlDocument;
+    private  static FileHelper fileHelper_inctance = null;
 
-    public FileHelper() {
+    private Properties propertyFile= new Properties();
+    private FileInputStream fileInputStream;
+
+    private FileHelper() {}
+
+    public static FileHelper getInstance()
+    {
+        if(fileHelper_inctance == null)
+            fileHelper_inctance = new FileHelper();
+        return fileHelper_inctance;
     }
 
-    public void openProperties(String pathName) {
-        appProps = new Properties();
-//        InputStream in = this.getClass().getClassLoader().getResourceAsStream("app.properties");
-        FileInputStream fileInputStream;
+    public void openProperties(String fileName){
         try {
-            fileInputStream = new FileInputStream(pathName);
-            appProps.load(fileInputStream);
-//            appProps.load(in);
+            fileInputStream = new FileInputStream(fileName);
+            propertyFile.load(fileInputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String getProperty(String key) {
-        if (appProps != null)
-            return appProps.getProperty(key);
-        else
-            return "";
+    public By get(String locatorName){
+        openProperties("resources/elements.properties");
+        String locatorValue = propertyFile.getProperty(locatorName);
+        String locatorType= propertyFile.getProperty(locatorName+".type");
+        if(locatorType == null)
+            locatorType = "id";
+
+        By locator = null;
+        switch(locatorType)
+        {
+            case "id":
+                locator = By.id(locatorValue);
+                break;
+            case "name":
+                locator = By.name(locatorValue);
+                break;
+            case "css_selector":
+                locator = By.cssSelector(locatorValue);
+                break;
+            case "link_text":
+                locator = By.linkText(locatorValue);
+                break;
+            case "partial_link_text":
+                locator = By.partialLinkText(locatorValue);
+                break;
+            case "tag_name":
+                locator = By.tagName(locatorValue);
+                break;
+            case "xpath":
+                locator = By.xpath(locatorValue);
+                break;
+        }
+        return locator;
     }
+
 }

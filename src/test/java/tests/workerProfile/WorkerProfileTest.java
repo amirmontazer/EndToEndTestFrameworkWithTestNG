@@ -39,7 +39,7 @@ public class WorkerProfileTest extends BaseTest {
                 .typeLastName("Montazerolghaem")
                 .typePassword("aS1@qwer")
                 .clickRegister();
-        wpp.isNotRegisterButtonDisplay();
+        wpp.isRegisterButtonDisplay();
     }
 
     @Test(priority = 2, description = "Register worker profile with correct info.")
@@ -51,13 +51,6 @@ public class WorkerProfileTest extends BaseTest {
                 .typeEmail()
                 .typePassword("aS1@qwer")
                 .clickRegister();
-        wpp.isNotRegisterButtonDisplay();
-//        wpp.assertVerification();
-    }
-
-    @Test(priority = 3, description = "This test must be fail.")
-    public void failTest(Method method){
-        ExtentTestManager.startTest(method.getName(), "This test must be fail.");
-        Assert.assertTrue(false);
+        wpp.assertVerification();
     }
 }

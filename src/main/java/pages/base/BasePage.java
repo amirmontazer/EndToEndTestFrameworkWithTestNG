@@ -17,6 +17,7 @@ public class BasePage {
 
     public WebDriver driver;
     public WebDriverWait wait;
+    public FileHelper element;
 
     public BasePage(WebDriver driver){
         initialPage(driver);
@@ -25,6 +26,7 @@ public class BasePage {
     private void initialPage(WebDriver driver){
         this.driver = driver;
         wait = new WebDriverWait(driver,TIMEOUT, POLLING);
+        element = FileHelper.getInstance();
     }
 
     public void waitVisibility(By elementBy) {
