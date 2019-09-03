@@ -1,6 +1,5 @@
 package pages.base;
 
-import org.graalvm.compiler.replacements.nodes.CStringConstant;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,16 +29,16 @@ public class BasePage {
         elements = FileHelper.getInstance();
     }
 
-    private By getElement(String el){
+    private By getElementBy(String el){
         return elements.get(el);
     }
 
     private WebElement findElement(String el){
-        return driver.findElement(getElement(el));
+        return driver.findElement(getElementBy(el));
     }
 
     public void waitVisibility(String el) {
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(getElement(el)));
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(getElementBy(el)));
     }
 
     public void click(String el) {
