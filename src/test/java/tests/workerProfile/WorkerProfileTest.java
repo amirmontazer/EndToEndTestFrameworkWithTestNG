@@ -1,6 +1,5 @@
 package tests.workerProfile;
 
-import org.testng.Assert;
 import tests.base.BaseTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -28,29 +27,29 @@ public class WorkerProfileTest extends BaseTest {
     @Test(priority = 0, description = "Response code should be equal to 200")
     public void checkResponseCode(Method method) {
         ExtentTestManager.startTest(method.getName(), "Response code should be equal to 200");
-        wpp.verifyResponseCode(BaseUrl);
+        wpp.assertResponseCode(BaseUrl, 200);
     }
 
     @Test(priority = 1, description = "Invalid register worker profile with wrong email.")
     public void registerWithEmptyField(Method method) {
         ExtentTestManager.startTest(method.getName(), "Invalid register worker profile with wrong email.");
         wpp.selectCountry("Canada")
-                .typeFirstName("Amir Hossein")
-                .typeLastName("Montazerolghaem")
-                .typePassword("aS1@qwer")
-                .clickRegister();
-        wpp.isRegisterButtonDisplay();
+                .fillOut("firstName", "Amir Hossein")
+                .fillOut("lastName", "Montazerolghaem")
+                .fillOut("password", "aS1@qwer")
+                .clickButton("agreeBtn");
+        wpp.isElementDisplayed("agreeBtn");
     }
 
     @Test(priority = 2, description = "Register worker profile with correct info.")
     public void register(Method method) {
         ExtentTestManager.startTest(method.getName(), "Register worker profile with correct info.");
         wpp.selectCountry("Canada")
-                .typeFirstName("Amir Hossein")
-                .typeLastName("Montazerolghaem")
-                .typeEmail()
-                .typePassword("aS1@qwer")
-                .clickRegister();
-        wpp.assertVerification();
+                .fillOut("firstName", "Amir Hossein")
+                .fillOut("lastName", "Montazerolghaem")
+                .fillOut("email", wpp.generateEmail())
+                .fillOut("password", "aS1@qwer")
+                .clickButton("agreeBtn");
+        wpp.assertText("verification");
     }
 }
