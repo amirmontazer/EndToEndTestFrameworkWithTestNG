@@ -9,6 +9,7 @@
         <classes>
             <class name="tests.index.IndexTest"></class>
             <class name="tests.workerProfile.WorkerProfileTest"></class>
+            <class name="tests.corporationProfile.CorporationProfileTest"></class>
         </classes>
     </test>
 </suite>
