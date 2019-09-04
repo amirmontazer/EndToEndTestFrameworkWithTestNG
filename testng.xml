@@ -7,7 +7,8 @@
     </listeners>
     <test verbose="2" preserve-order="true" name="e2e">
         <classes>
-                <class name="tests.workerProfile.WorkerProfileTest"></class>
+            <class name="tests.index.IndexTest"></class>
+            <class name="tests.workerProfile.WorkerProfileTest"></class>
         </classes>
     </test>
 </suite>
