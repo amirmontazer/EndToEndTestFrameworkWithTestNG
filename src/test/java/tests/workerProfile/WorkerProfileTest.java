@@ -5,34 +5,29 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.workerProfile.WorkerProfilePage;
-import utils.ExtentReports.ExtentTestManager;
-import java.lang.reflect.Method;
 
 public class WorkerProfileTest extends BaseTest {
 
     WorkerProfilePage wpp;
-    String BaseUrl;
 
     @BeforeClass
-    public void setupDriver() {
+    public void initClass() {
         wpp = new WorkerProfilePage(driver);
-        BaseUrl = hostUrl + "#/create-worker-profile";
+        baseUrl = hostUrl + "#/create-worker-profile";
     }
 
     @BeforeMethod
-    public void goToPage() {
-        wpp.goToPage(BaseUrl);
+    public void initMethod() {
+        wpp.goToPage(baseUrl);
     }
 
     @Test(priority = 0, description = "Response code should be equal to 200")
-    public void checkResponseCode(Method method) {
-        ExtentTestManager.startTest(method.getName(), "Response code should be equal to 200");
-        wpp.assertResponseCode(BaseUrl, 200);
+    public void checkResponseCode() {
+        wpp.assertResponseCode(baseUrl, 200);
     }
 
-    @Test(priority = 1, description = "Invalid register worker profile with wrong email.")
-    public void registerWithEmptyField(Method method) {
-        ExtentTestManager.startTest(method.getName(), "Invalid register worker profile with wrong email.");
+    @Test(priority = 1, description = "Invalid register worker profile with wrong email")
+    public void registerWithEmptyField() {
         wpp.selectCountry("Canada")
                 .fillOut("firstName", "Amir Hossein")
                 .fillOut("lastName", "Montazerolghaem")
@@ -41,9 +36,8 @@ public class WorkerProfileTest extends BaseTest {
         wpp.isElementDisplayed("agreeBtn");
     }
 
-    @Test(priority = 2, description = "Register worker profile with correct info.")
-    public void register(Method method) {
-        ExtentTestManager.startTest(method.getName(), "Register worker profile with correct info.");
+    @Test(priority = 2, description = "Register worker profile with correct info")
+    public void register() {
         wpp.selectCountry("Canada")
                 .fillOut("firstName", "Amir Hossein")
                 .fillOut("lastName", "Montazerolghaem")
