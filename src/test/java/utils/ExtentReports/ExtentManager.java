@@ -9,13 +9,19 @@ import java.time.format.DateTimeFormatter;
 public class ExtentManager {
 
     private static ExtentReports extent;
+    private static String reportPath;
 
     public synchronized static ExtentReports getReporter() {
         if (extent == null) {
-            extent = new ExtentReports("ExtentReports/" + getCurrentDateTime() + ".html", true);
+            reportPath = "ExtentReports/" + getCurrentDateTime() + ".html";
+            extent = new ExtentReports(reportPath, true);
             extent.loadConfig(new File("resources/extent-config.xml"));
         }
         return extent;
+    }
+
+    public static String getReportPath(){
+        return reportPath;
     }
 
     private static String getCurrentDateTime() {
